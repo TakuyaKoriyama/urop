@@ -1,8 +1,3 @@
-# readme
-jsjsk
-- hsdgj
-- kjhkjs
-
 
 ## githubにファイルをアップロードする手順
 
