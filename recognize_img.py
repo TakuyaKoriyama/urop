@@ -23,7 +23,7 @@ def vis_img(img):
     plt.imshow(img), plt.axis("off")
     plt.show()
 
-def transform(img): ###訓練した時と同じような前処理をするcodeをopencvで書きたい
+def transform(img): ###訓練した時と同じような前処理をするcodeをopencvで書きたい←transformsモジュールをよく見る
     img = cv2.resize(img, (224,224))
     return img
 
@@ -40,7 +40,7 @@ img = read_img(img_path=img_path)
 img = transform(img)
 
 vis_img(img=img)  
-img = torch.tensor(img)###tensorのsizeがモデルの期待する形と会ってない
+img = torch.tensor(img) ###tensorのsizeがモデルの期待する形と会ってない←バッチサイズも含めて4ベクトルだから、次元を増やす必要がある。
 label = recognize(model_ft=model_ft, img=img)
 
 print(label)
