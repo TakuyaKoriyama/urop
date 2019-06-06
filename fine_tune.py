@@ -10,16 +10,15 @@ import time
 import os
 import copy
 from finetune_helper_function import train_model, set_parameter_requires_grad, initialize_model
-
+from sklearn.externals import joblib
 
 
 model_name = "alexnet"
-num_classes = 3
+num_classes = 2
 feature_extract = True
-data_dir = "./img/animals"
-bacth_size = 2
-num_epochs = 10
-
+data_dir = "./img/hymenoptera_data"
+bacth_size = 4
+num_epochs = 15
 
 model_ft, input_size = initialize_model(model_name, num_classes, feature_extract, use_pretrained=True)
 
@@ -41,8 +40,8 @@ print("Initializing Datasets and Dataloaders...")
 
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x), data_transforms[x]) for x in ['train', 'val']}
 dataloaders_dict = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=bacth_size, shuffle=True, num_workers=4) for x in ['train', 'val']}
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 model_ft = model_ft.to(device)
 
@@ -68,4 +67,4 @@ criterion = nn.CrossEntropyLoss()
 
 model_ft, hist = train_model(model_ft, dataloaders_dict, criterion, optimizer_ft, num_epochs=num_epochs, is_inception=(model_name=="inception"))
 
-
+joblib.dump(model_ft, 'ant_classifier.pkl') ##このままだと現在のディレクトリに保存されてしまう→model/に保存するやり方を調べる

@@ -16,6 +16,8 @@ import copy
 def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_inception=False):
     since = time.time()
 
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
     val_acc_history = []
 
     best_model_wts = copy.deepcopy(model.state_dict())
@@ -37,7 +39,7 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_ince
 
             
             for inputs, labels in dataloaders[phase]:
-                inputs = inputs.to(device)
+                inputs = inputs.to(device) ###ここで、deviceがdefineされてないという旨のerrorが出る
                 labels = labels.to(device)
 
                 

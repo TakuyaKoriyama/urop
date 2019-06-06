@@ -12,10 +12,7 @@ import os
 import copy
 import cv2
 from finetune_helper_function import train_model, set_parameter_requires_grad, initialize_model
-
-#from model import model
-
-
+from sklearn.externals import joblib
 
 def read_img(img_path):
     img_bgr = cv2.imread(img_path, cv2.IMREAD_COLOR)
@@ -26,7 +23,7 @@ def vis_img(img):
     plt.imshow(img), plt.axis("off")
     plt.show()
 
-def transform(img):
+def transform(img): ###訓練した時と同じような前処理をするcodeをopencvで書きたい
     img = cv2.resize(img, (224,224))
     return img
 
@@ -34,14 +31,16 @@ def recognize(model_ft, img):
     labels = model_ft(img)
     return labels
 
-label_to_name = ["dog", "cat", "rabbit"]
+model_ft = joblib.load("ant_classifier.pkl")
 
-img_path = "./img/test/dog.jpg"
+label_to_name = ["ants", "bees"]
+
+img_path = "./img/test_img/ants.jpg"
 img = read_img(img_path=img_path)
 img = transform(img)
 
 vis_img(img=img)  
-
+img = torch.tensor(img)###tensorのsizeがモデルの期待する形と会ってない
 label = recognize(model_ft=model_ft, img=img)
 
 print(label)
