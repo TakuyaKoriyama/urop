@@ -1,5 +1,3 @@
-from __future__ import print_function
-from __future__ import division
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -39,9 +37,10 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_ince
 
             
             for inputs, labels in dataloaders[phase]:
-                inputs = inputs.to(device) ###ここで、deviceがdefineされてないという旨のerrorが出る
+                print(type(inputs))
+                inputs = inputs.to(device) 
                 labels = labels.to(device)
-
+                
                 
                 optimizer.zero_grad()
 
