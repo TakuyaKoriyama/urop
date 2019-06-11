@@ -21,7 +21,7 @@ def vis_img(img, color_order="BGR"):
         plt.show()
 
 
-def transform(img): ###訓練した時と同じような前処理をするcodeをopencvで書きたい
+def transform(img): 
     tsfn = transforms.Compose([
     transforms.Resize(224),
     transforms.CenterCrop(224),
