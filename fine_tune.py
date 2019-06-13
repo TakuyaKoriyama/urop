@@ -102,9 +102,6 @@ if save_model:
     f = open(new_model_label_path, 'wb')
     pickle.dump(label_to_name, f)
 
-    f = open(new_model_hist_path, 'wb')
-    pickle.dump(hist, f)
-
 else:
     pass
 
