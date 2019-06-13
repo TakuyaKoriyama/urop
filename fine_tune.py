@@ -20,7 +20,7 @@ parser.add_argument("--new_model_name", type=str, required=True)
 parser.add_argument("--num_classes", type=int, default=2)
 parser.add_argument("--feature_extract", action="store_true")
 parser.add_argument("--data_dir", type=str, required=True, help="ex) ./img/animals")
-parser.add_argument("--bacth_size", type=int, default=4)
+parser.add_argument("--batch_size", type=int, default=4)
 parser.add_argument("--num_epochs", type=int, default=10)
 parser.add_argument("--class_name", type=str, nargs="*", required=True)
 parser.add_argument("--lr", type=float, default = 0.001)
@@ -37,7 +37,7 @@ new_model_hist_path = "./hist/" + new_model_name + ".hist"
 num_classes = args.num_classes
 feature_extract = args.feature_extract
 data_dir = args.data_dir
-bacth_size = args.bacth_size
+batch_size = args.batch_size
 num_epochs = args.num_epochs
 label_to_name = args.class_name
 lr = args.lr
@@ -71,7 +71,7 @@ transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 }
 print("Initializing Datasets and Dataloaders...")
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x), data_transforms[x]) for x in ['train', 'val']}
-dataloaders_dict = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=bacth_size, shuffle=True, num_workers=4) for x in ['train', 'val']}
+dataloaders_dict = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=batch_size, shuffle=True, num_workers=4) for x in ['train', 'val']}
 
 
 
