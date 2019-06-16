@@ -57,7 +57,7 @@ with torch.no_grad():
         #print("predicted.size" ,predicted.size()) torch.Size([4])
         c = (predicted == labels).squeeze() 
         
-        if c.size() != torch.Size([4]):
+        if c.size() != torch.Size([batch_size]): ####これを導入することで6行目のエラーを無理やり回避している
             break      
         #print("c.size()", c.size()) torch.Size([4])
 
