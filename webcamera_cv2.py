@@ -21,7 +21,7 @@ label_to_name = pickle.load(f)
 cap = cv2.VideoCapture(0)
 
 while True:
-    # VideoCaptureから1フレーム読み込む
+    
     ret, frame = cap.read()
 
     img_pil = cv2pil(frame)
@@ -35,14 +35,13 @@ while True:
 
     cv2.putText(edframe, label_to_name[pred], (0,50), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255,0), 3, cv2.LINE_AA)
 
-    # 加工済の画像を表示する
+
     cv2.imshow('Edited Frame', edframe)
 
-    # キー入力を1ms待って、k が27（ESC）だったらBreakする
     k = cv2.waitKey(1)
     if k == 27:
         break
 
-# キャプチャをリリースして、ウィンドウをすべて閉じる
+
 cap.release()
 cv2.destroyAllWindows()
