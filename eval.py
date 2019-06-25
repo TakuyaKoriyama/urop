@@ -28,7 +28,7 @@ num_classes = len(label_to_name)
 
 
 data_transforms =transforms.Compose([
-    transforms.Resize(224), ####input_sizeの一般化ができていない。
+    transforms.Resize(224), 
     transforms.CenterCrop(224),
     transforms.ToTensor(),
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
@@ -49,49 +49,32 @@ with torch.no_grad():
     for images, labels in dataloader:
         images = images.to(device)
         labels = labels.to(device)
-        ###batch_sizeは４, class数は２
-        #print("labels.size()", labels.size()) torch.Size([4])
-        outputs = model(images)
-        # print("outputs.size()", outputs.size()) torch.Size([4, 2])
-        _, predicted = torch.max(outputs, 1)
-        #print("predicted.size" ,predicted.size()) torch.Size([4])
-        c = (predicted == labels).squeeze() 
         
-        if c.size() != torch.Size([batch_size]): ####これを導入することで6行目のエラーを無理やり回避している
-            break      
-        #print("c.size()", c.size()) torch.Size([4])
-
-
-
-
-        ###データ数がバッチサイズで割り切れないため、cが最後だけtorch.Size([])となっている。
-        ###これが原因で、86行目でindexerrorが生じる。
-
-
+        outputs = model(images)
+        
+        _, predicted = torch.max(outputs, 1)
+        c = (predicted == labels).squeeze() 
+        if len(c) == 1:
+            c = torch.reshape(c, (-1, len(c)))
 
 
 
 
 
 
-        for i in range(batch_size):
+        for i in range(len(images)): 
 
             label = labels[i]
-            #print('type of label') -- <class 'torch.Tensor'>
-            #print("label.size()", label.size()) torch.Size([])
-            #print("type of c[i]") -- <class 'torch.Tensor'>
-            #print("c[i].size()", c[i].size()) torch.Size([])
-            
-
-            class_correct[label] += c[i].item()  #####ここで67行目で指摘したエラーが発生
+            class_correct[label] += c[i].item()  
             class_total[label] += 1
 
 
+print(label_to_name)
 for i in range(num_classes):
     print('Accuracy of %5s : %2d %%' % (
         label_to_name[i], 100 * class_correct[i] / class_total[i]))
 
-
+print(label_to_name)
 class_acc_list = [100 * class_correct[i] / class_total[i] for i in range(num_classes)]
 
 
