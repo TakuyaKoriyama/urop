@@ -1,14 +1,7 @@
 import torchvision
 from torchvision.transforms import functional as F
 import cv2
-# from cv2_helper_function import cv2pil
-from PIL import Image
-def cv2pil(image_cv):
-    image_cv = cv2.cvtColor(image_cv, cv2.COLOR_BGR2RGB)
-    image_pil = Image.fromarray(image_cv)
-    image_pil = image_pil.convert('RGB')
-
-    return image_pil
+from transforms import cv2pil
 
 model = torchvision.models.detection.maskrcnn_resnet50_fpn(pretrained=True)
 model.eval()
@@ -32,25 +25,32 @@ cap = cv2.VideoCapture(0)
 while True:
     
     ret, frame = cap.read()
-
     img = cv2pil(frame)
     img = F.to_tensor(img)
-    pred = model(img)
+    
+    
+    pred = model([img])
+    pred = pred[0]
+    object_num = len(pred)
+    
+    
 
-    boxes = pred["boxes"]
-    labels = pred["labels"]
-    scores = pred["scores"]
-    masks = pred["masks"]
+    for i in range(object_num):
 
+        box = pred['boxes'][i]
+        label = pred['labels'][i]
+        mask = pred['masks'][i]
+        score = pred['scores'][i]
+        
 
+        cv2.rectangle(frame, (box[0], box[1]), (box[2], box[3]), (0, 0, 255), 5)
+        cv2.putText(frame, label_to_name[label] + " acc: {}%".format(int(score*100)), (box[0],box[1]), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255,0), 3, cv2.LINE_AA)
 
+    
+    cv2.imshow('Detection frame', frame)
 
-    edframe = frame
-
-    cv2.putText(edframe, label_to_name[labels], (0,50), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255,0), 3, cv2.LINE_AA)
-
-
-    cv2.imshow('Edited Frame', edframe)
+    #for i in range(object_num):
+        #cv2.imshow('Detection mask' + str(i), mask)
 
     k = cv2.waitKey(1)
     if k == 27:
