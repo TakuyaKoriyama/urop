@@ -60,3 +60,7 @@ def mask_transform(mask):
     mask = mask.astype(np.uint8)
     mask_ed = mask.transpose(1, 2, 0)
     return mask_ed
+
+def read_img(img_path):
+    img_bgr = cv2.imread(img_path, cv2.IMREAD_COLOR)
+    return img_bgr
