@@ -2,7 +2,7 @@ import torchvision
 from torchvision.transforms import functional as F
 import cv2
 from transforms import cv2pil, mask_transform
-
+import time
 
 model = torchvision.models.detection.maskrcnn_resnet50_fpn(pretrained=True)
 model.eval()
@@ -23,8 +23,11 @@ label_to_name = [
 
 cap = cv2.VideoCapture(0)
 
-while True:
-    
+time_sum = 0
+#while True:
+for i in range(20):
+    start = time.time()
+
     ret, frame = cap.read()
     img = cv2pil(frame)
     img = F.to_tensor(img)
@@ -42,10 +45,12 @@ while True:
         label = pred['labels'][i]
         score = pred['scores'][i]
         
-
-        cv2.rectangle(frame, (box[0], box[1]), (box[2], box[3]), (0, 0, 255), 5)
-        cv2.putText(frame, label_to_name[label] + " acc: {}%".format(int(score*100)), (box[0],box[1]), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255,0), 3, cv2.LINE_AA)
-        
+        if score < 0.5:
+            pass
+        else:    
+            cv2.rectangle(frame, (box[0], box[1]), (box[2], box[3]), (0, 0, 255), 5)
+            cv2.putText(frame, label_to_name[label] + " acc: {}%".format(int(score*100)), (box[0],box[1]), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255,0), 3, cv2.LINE_AA)
+            
     
     cv2.imshow('Detection frame', frame)
 
@@ -54,11 +59,15 @@ while True:
     #     mask_ed = mask_transform(mask)
     #     cv2.imshow('mask' + str(i), mask_ed)
     
+    elapsed_time = time.time() - start
+    time_sum += elapsed_time
+
     k = cv2.waitKey(1)
     
     if k == 27:
         break
 
+print(time_sum/20)
 
 cap.release()
 cv2.destroyAllWindows()

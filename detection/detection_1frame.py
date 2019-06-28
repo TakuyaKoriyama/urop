@@ -27,13 +27,13 @@ label_to_name = [
     'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush'
 ]
 
-img_cv = read_img(img)
+img_cv = read_img(img_path)
 img_pil = cv2pil(img_cv)
 img_ts = F.to_tensor(img_pil)
 
-pred = model(img_ts)
+pred = model([img_ts])
 pred = pred[0]
-object_num = len(pred['label'])
+object_num = len(pred['labels'])
 
 for i in range(object_num):
 
@@ -41,9 +41,12 @@ for i in range(object_num):
     label = pred['labels'][i]
     score = pred['scores'][i]
     
-
-    cv2.rectangle(img_cv, (box[0], box[1]), (box[2], box[3]), (0, 0, 255), 5)
-    cv2.putText(img_cv, label_to_name[label] + " acc: {}%".format(int(score*100)), (box[0],box[1]), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255,0), 3, cv2.LINE_AA)
+    if score <= 0.5:
+        pass
+    else:
+        cv2.rectangle(img_cv, (box[0], box[1]), (box[2], box[3]), (0, 0, 255), 5)
+        cv2.putText(img_cv, label_to_name[label] + " acc: {}%".format(int(score*100)), (box[0],box[1]), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255,0), 3, cv2.LINE_AA)
     
 
 cv2.imshow('Detection', img_cv)
+cv2.waitKey(0)
