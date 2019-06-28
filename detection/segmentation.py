@@ -32,7 +32,7 @@ while True:
     
     pred = model([img])
     pred = pred[0]
-    object_num = len(pred)
+    object_num = len(pred['labels'])
     
     
 
@@ -53,8 +53,9 @@ while True:
     #     mask = pred['masks'][i]
     #     mask_ed = mask_transform(mask)
     #     cv2.imshow('mask' + str(i), mask_ed)
-
+    
     k = cv2.waitKey(1)
+    
     if k == 27:
         break
 
