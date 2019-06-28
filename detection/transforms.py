@@ -3,7 +3,7 @@ import torch
 from PIL import Image
 from torchvision.transforms import functional as F
 import cv2
-
+import numpy as np 
 def _flip_coco_person_keypoints(kps, width):
     flip_inds = [0, 2, 1, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 16, 15]
     flipped_data = kps[:, flip_inds]
@@ -54,3 +54,9 @@ def cv2pil(image_cv):
     image_pil = Image.fromarray(image_cv)
     image_pil = image_pil.convert('RGB')
     return image_pil
+
+def mask_transform(mask):
+    mask = mask.detach().numpy()
+    mask = mask.astype(np.uint8)
+    mask_ed = mask.transpose(1, 2, 0)
+    return mask_ed
