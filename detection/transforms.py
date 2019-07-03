@@ -64,3 +64,39 @@ def mask_transform(mask):
 def read_img(img_path):
     img_bgr = cv2.imread(img_path, cv2.IMREAD_COLOR)
     return img_bgr
+
+def IOU_cheack(p, q , threshold=0.5):
+    px_0 = p[0]
+    py_0 = p[1]
+    px_1 = p[2]
+    py_1 = p[3]
+
+    qx_0 = q[0]
+    qy_0 = q[1]
+    qx_1 = q[2]
+    qy_1 = q[3]
+
+    s_p = (px_0 - px_1) * (py_0 - py_1)
+    s_q = (qx_0 - qx_1) * (qy_0 - qy_1)
+
+    if px_1 < qx_0 and px_0 < qx_1 and py_1 < qy_0 and py_0 < qy_1:
+        x_list = [px_0, px_1, qx_1, qx_1]
+        y_list = [py_0, py_1, qy_1, qy_1]
+        x_max = max(x_list)
+        x_min = min(x_list)
+        y_max = max(y_list)
+        y_min = min(y_list)
+        x_list.remove(x_max)
+        x_list.remove(x_min)
+        y_list.remove(y_max)
+        y_list.remove(y_min)
+        x = x_list[0] - x_list[1]
+        y = y_list[0] - y_list[1]
+        iou = abs(x*y) /s_p + s_q - abs(x*y)
+    else:
+        iou = 0
+    
+    if iou > threshold:
+        return False
+    else:
+        return True
