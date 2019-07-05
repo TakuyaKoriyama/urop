@@ -6,9 +6,9 @@ import time
 import argparse
 
 parser = argparse.ArgumentParser(description='segmentation using webcamera')
-parser.add_argument('-frame_num', default=20)
-parser.add_argument('-score_thr', default=0.5)
-parser.add_argument('-iou_thr', default=0.5)
+parser.add_argument('-fn','--frame_num', type=int, default=20)
+parser.add_argument('-st','--score_thr', type=float, default=0.5)
+parser.add_argument('-it','--iou_thr', type=float, default=0.3)
 args = parser.parse_args()
 
 frame_num = args.frame_num
@@ -49,6 +49,7 @@ for i in range(frame_num):
     object_num = len(labels)
 
     high_score_id = []
+    id_mapped = []
 
     for i in range(object_num):
         score = scores[i]
@@ -56,19 +57,29 @@ for i in range(frame_num):
             pass
         else:
             high_score_id.append(i)
-    
+
+
     for i in high_score_id:
-        for j in high_score_id:
-            if not IOU_cheack(boxes[i], boxes[j]):
-                break
-            else:
-                continue
-        box = boxes[i]
-        label = labels[i]
-        score = scores[i]
-        cv2.rectangle(frame, (box[0], box[1]), (box[2], box[3]), (0, 0, 255), 5)
-        cv2.putText(frame, label_to_name[label] + " {}%".format(int(score*100)), (box[0],box[1]), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255,0), 3, cv2.LINE_AA)
-        
+        if i == 0:
+            box = boxes[i]
+            label = labels[i]
+            score = scores[i]
+            cv2.rectangle(frame, (box[0], box[1]), (box[2], box[3]), (0, 0, 255), 5)
+            cv2.putText(frame, label_to_name[label] + " {}%".format(int(score*100)), (box[0],box[1]), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255,0), 3, cv2.LINE_AA)
+            id_mapped.append(i)
+        else:
+            for j in id_mapped:
+                if not IOU_cheack(boxes[i], boxes[j], threshold=iou_thr):
+                    break
+
+                if j == id_mapped[-1]:
+                    box = boxes[i]
+                    label = labels[i]
+                    score = scores[i]
+                    cv2.rectangle(frame, (box[0], box[1]), (box[2], box[3]), (0, 0, 255), 5)
+                    cv2.putText(frame, label_to_name[label] + " {}%".format(int(score*100)), (box[0],box[1]), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255,0), 3, cv2.LINE_AA)
+                    id_mapped.append(i)
+    
 
     cv2.imshow('Detection frame', frame)        
     elapsed_time = time.time() - start

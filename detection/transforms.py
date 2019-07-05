@@ -78,10 +78,10 @@ def IOU_cheack(p, q , threshold=0.5):
 
     s_p = (px_0 - px_1) * (py_0 - py_1)
     s_q = (qx_0 - qx_1) * (qy_0 - qy_1)
-
-    if px_1 < qx_0 and px_0 < qx_1 and py_1 < qy_0 and py_0 < qy_1:
-        x_list = [px_0, px_1, qx_1, qx_1]
-        y_list = [py_0, py_1, qy_1, qy_1]
+    
+    if px_1 > qx_0 and px_0 < qx_1 and py_1 > qy_0 and py_0 < qy_1:
+        x_list = [px_0, px_1, qx_0, qx_1]
+        y_list = [py_0, py_1, qy_0, qy_1]
         x_max = max(x_list)
         x_min = min(x_list)
         y_max = max(y_list)
@@ -90,9 +90,10 @@ def IOU_cheack(p, q , threshold=0.5):
         x_list.remove(x_min)
         y_list.remove(y_max)
         y_list.remove(y_min)
+        
         x = x_list[0] - x_list[1]
         y = y_list[0] - y_list[1]
-        iou = abs(x*y) /s_p + s_q - abs(x*y)
+        iou = abs(x*y) / (s_p + s_q - abs(x*y))
     else:
         iou = 0
     
