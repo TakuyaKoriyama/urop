@@ -11,7 +11,7 @@ monopo_share.pem
 img_source
 detection/PennFudanPed
 detection/people.jpg
-
+detection/test_img
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
