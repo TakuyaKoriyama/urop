@@ -80,7 +80,7 @@ for i in range(frame_num):
                     cv2.putText(frame, label_to_name[label] + " {}%".format(int(score*100)), (box[0],box[1]), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255,0), 3, cv2.LINE_AA)
                     id_mapped.append(i)
     
-
+    cv2.namedWindow('Detection frame', cv2.WINDOW_NORMAL)
     cv2.imshow('Detection frame', frame)        
     elapsed_time = time.time() - start
     time_sum += elapsed_time
