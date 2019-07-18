@@ -17,10 +17,11 @@ for i in range(len(imgs_list) - 1):
     while True:
         print(box_id, ': enter waitkey')
         k = cv2.waitKey(0)
-        if k == 48:
+        if k == 27:
             cv2.destroyAllWindows()
             break
         else:
+            k = k - 48
             print('class label:{}'.format(k))
             r = cv2.selectROI(window_name, im)
             class_label = k
