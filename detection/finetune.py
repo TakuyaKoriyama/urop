@@ -134,5 +134,6 @@ def main():
 
     print("That's it!")
     
+    torch.save(model, 'finetune_data/model')
 if __name__ == "__main__":
     main()
