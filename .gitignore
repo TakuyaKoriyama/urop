@@ -12,7 +12,7 @@ img_source
 detection/PennFudanPed
 detection/people.jpg
 detection/test_img
-detection/finetune_data
+detection/gender_data
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
