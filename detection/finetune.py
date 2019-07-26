@@ -89,8 +89,8 @@ def main():
     # our dataset has two classes only - background and person
     num_classes = 2  #female and male
     # use our dataset and defined transformations
-    dataset = Dataset('finetune_data', get_transform(train=True))
-    dataset_test = Dataset('finetune_data', get_transform(train=False))
+    dataset = Dataset('gender_data', get_transform(train=True))
+    dataset_test = Dataset('gender_data', get_transform(train=False))
 
     # split the dataset in train and test set
     indices = torch.randperm(len(dataset)).tolist()
@@ -134,6 +134,6 @@ def main():
 
     print("That's it!")
     
-    torch.save(model, 'finetune_data/model')
+    torch.save(model, 'gender_data/model')
 if __name__ == "__main__":
     main()
