@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import os
 
-root = 'finetune_data'
+root = 'gender_data'
 imgs_list = list(sorted(os.listdir(os.path.join(root, "Images"))))
 print(imgs_list)
 box_label_path = os.path.join(root, 'box_label.txt')
