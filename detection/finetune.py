@@ -48,7 +48,10 @@ class Dataset(object):
         boxes = torch.as_tensor(boxes, dtype=torch.float32)
         labels = torch.as_tensor(labels, dtype=torch.uint8)
         image_id = torch.tensor([idx])
-
+        area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+        num_objs = len(labels)
+        iscrowd = torch.zeros((num_objs,), dtype=torch.int64)
+        
         target = {}
         target["boxes"] = boxes
         target["labels"] = labels
