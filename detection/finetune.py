@@ -2,14 +2,13 @@ import os
 import numpy as np
 import torch
 from PIL import Image
-
 import torchvision
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
-from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
-
 from engine import train_one_epoch, evaluate
 import utils
 import transforms as T
+import argparse
+import pickle
 
 
 class Dataset(object): 
@@ -83,14 +82,18 @@ def get_transform(train):
 
 
 def main():
-    # train on the GPU or on the CPU, if a GPU is not available
-    device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+    parser = argparse.ArgumentParser(description='finetune')
+    parser.add_argument('data_root', type = str, help = 'example: gender')
+    args = parser.parse_args()
 
-    # our dataset has two classes only - background and person
-    num_classes = 2  #female and male
+    root = os.path.join('data', args.data_root)
+    f = open(os.path.join(root, 'label_to_name'), 'rb')
+    label_to_name =pickle.load(f)
+    num_classes = len(label_to_name)
+    device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
     # use our dataset and defined transformations
-    dataset = Dataset('gender_data', get_transform(train=True))
-    dataset_test = Dataset('gender_data', get_transform(train=False))
+    dataset = Dataset(root, get_transform(train=True))
+    dataset_test = Dataset(root, get_transform(train=False))
 
     # split the dataset in train and test set
     indices = torch.randperm(len(dataset)).tolist()
@@ -134,6 +137,6 @@ def main():
 
     print("That's it!")
     
-    torch.save(model, 'gender_data/model')
+    torch.save(model, os.path.join(root, 'model'))
 if __name__ == "__main__":
     main()
