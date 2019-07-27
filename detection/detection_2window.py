@@ -4,34 +4,27 @@ import cv2
 from transforms import cv2pil, IOU_cheack
 import time
 import argparse
-
+import pickle
+import os
 
 parser = argparse.ArgumentParser(description='segmentation using webcamera')
+parser.add_argument('data_root', type=str, help='example: gender')
 parser.add_argument('-st','--score_thr', type=float, default=0.5)
 parser.add_argument('-it','--iou_thr', type=float, default=0.3)
+
 args = parser.parse_args()
-
-
+root = os.path.join('data', args.data_root)
 score_thr = args.score_thr
 iou_thr = args.iou_thr
+f = open(os.path.join(root, 'label_to_name'), 'rb')
+label_to_name = pickle.load(f)
+if args.data_root == 'faster_rcnn' :
+    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
+    model.eval()
+else:
+    model = torch.load(os.path.join(root, 'model'))
+    model.eval()
 
-label_to_name = [
-    '__background__', 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus',
-    'train', 'truck', 'boat', 'traffic light', 'fire hydrant', 'N/A', 'stop sign',
-    'parking meter', 'bench', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow',
-    'elephant', 'bear', 'zebra', 'giraffe', 'N/A', 'backpack', 'umbrella', 'N/A', 'N/A',
-    'handbag', 'tie', 'suitcase', 'frisbee', 'skis', 'snowboard', 'sports ball',
-    'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket',
-    'bottle', 'N/A', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl',
-    'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza',
-    'donut', 'cake', 'chair', 'couch', 'potted plant', 'bed', 'N/A', 'dining table',
-    'N/A', 'N/A', 'toilet', 'N/A', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 'cell phone',
-    'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'N/A', 'book',
-    'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush'
-]
-
-model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
-model.eval()
 cap = cv2.VideoCapture(0)
 
 while True:
