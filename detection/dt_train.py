@@ -151,6 +151,6 @@ def main():
         evaluate(model, data_loader_test, device=device)
 
     print("That's it!")
-    
+    torch.save(model, 'data/PennFudanPed/model')
 if __name__ == "__main__":
     main()
