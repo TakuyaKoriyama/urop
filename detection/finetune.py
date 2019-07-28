@@ -15,8 +15,11 @@ class Dataset(object):
     def __init__(self, root, transforms):
         self.root = root
         self.transforms = transforms
-        #リストの最初は画像ではない物がくる。＜＜＜＜＜それにすら対応してるのかな。。。。？
-        self.imgs = list(sorted(os.listdir(os.path.join(root, "Images"))))[1:] 
+        imgs = list(sorted(os.listdir(os.path.join(root, "Images")))) 
+        ###.DS_Storeが含まれているとしたらsortされたlistの最初にくる
+        if imgs[0] == '.DS_Store':
+            imgs.pop(0)
+        self.imgs = imgs
         txt = open(os.path.join(root, 'box_label.txt'), 'r')
         boxes_al = []
         labels_al = []

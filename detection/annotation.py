@@ -15,11 +15,13 @@ f = open(os.path.join(root, 'label_to_name'), 'wb')
 pickle.dump(label_to_name, f)
 
 imgs_list = list(sorted(os.listdir(os.path.join(root, "Images"))))
+if imgs_list[0] == '.DS_Store':
+    imgs_list.pop(0)
 print('{}pictures to annotate'.format(len(imgs_list)))
 box_label_path = os.path.join(root, 'box_label.txt')
 file = open(box_label_path, 'a')
-for i in range(len(imgs_list) - 1):
-    img_path = os.path.join(root, "Images", imgs_list[i+1])
+for i in range(len(imgs_list)):
+    img_path = os.path.join(root, "Images", imgs_list[i])
     window_name = 'Image:{}'.format(i)
     im = cv2.imread(img_path)
     cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
