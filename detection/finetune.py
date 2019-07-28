@@ -56,6 +56,8 @@ class Dataset(object):
         target["boxes"] = boxes
         target["labels"] = labels
         target["image_id"] = image_id
+        target['area'] = area
+        target['iscrowd'] = iscrowd
         if self.transforms is not None:
             img, target = self.transforms(img, target)
         
@@ -140,6 +142,7 @@ def main():
 
     print("That's it!")
     
-    torch.save(model, os.path.join(root, 'model'))
+    torch.save(model.state_dict(), os.path.join(root, 'weight'))
+    
 if __name__ == "__main__":
     main()
