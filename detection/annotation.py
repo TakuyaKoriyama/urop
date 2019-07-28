@@ -33,7 +33,7 @@ for i in range(len(imgs_list)):
         if k == 27:
             cv2.destroyAllWindows()
             break
-        else:
+        elif k <= len(label_to_name) + 48:
             k = k - 48
             print('class :{}'.format(label_to_name[k]))
             r = cv2.selectROI(window_name, im)
@@ -44,5 +44,7 @@ for i in range(len(imgs_list)):
             y_1 = str(r[0]+r[2])
             file.write(str(i) + ',' + str(box_id) + ',' +  str(class_label) + ',' + x_0 + ',' + y_0 + ',' + x_1 + ',' + y_1 + '\n')
             box_id += 1
+        else:
+            print('enter number from {} to {} or go to next img by push esc botton'.format(0, len(label_to_name)-1))
 
 file.close()
