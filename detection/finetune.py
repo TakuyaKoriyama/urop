@@ -145,6 +145,6 @@ def main():
 
     print("That's it!")
     torch.save(model.state_dict(), os.path.join(root, 'weight'))
-    print('saved weights of the model)
+    print('saved weights of the model')
 if __name__ == "__main__":
     main()
