@@ -6,6 +6,7 @@ import argparse
 import pickle
 import torch
 import os
+from finetune import get_model_instance_segmentation
 
 parser = argparse.ArgumentParser(description="detection_1frame")
 parser.add_argument('img_path', type=str)
@@ -25,7 +26,8 @@ if args.data_root == 'faster_rcnn':
     model = torchvision.models.detection.maskrcnn_resnet50_fpn(pretrained=True)
     model.eval()
 else:
-    model = torch.load(os.path.join(root, 'model'))
+    model = get_model_instance_segmentation(len(label_to_name))
+    model.load_state_dict(torch.load(os.path.join(root, 'weight')))
     model.eval()
 
 

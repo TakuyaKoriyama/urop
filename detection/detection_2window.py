@@ -6,6 +6,7 @@ import time
 import argparse
 import pickle
 import os
+from finetune import get_model_instance_segmentation
 
 parser = argparse.ArgumentParser(description='segmentation using webcamera')
 parser.add_argument('data_root', type=str, help='example: gender')
@@ -22,7 +23,8 @@ if args.data_root == 'faster_rcnn' :
     model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
     model.eval()
 else:
-    model = torch.load(os.path.join(root, 'model'))
+    model = get_model_instance_segmentation(len(label_to_name))
+    model.load_state_dict(torch.load(os.path.join(root, 'weight')))
     model.eval()
 
 cap = cv2.VideoCapture(0)
