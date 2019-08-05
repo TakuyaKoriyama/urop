@@ -24,7 +24,7 @@ for i in range(len(imgs_list)):
     img_path = os.path.join(root, "Images", imgs_list[i])
     window_name = 'Image:{}'.format(i)
     im = cv2.imread(img_path)
-    #cv2.namedWindow(window_name, cv2.WINDOW_NORMAL) ここあまりよく無いのかもしれない。
+    #cv2.namedWindow(window_name, cv2.WINDOW_NORMAL) ここ
     cv2.imshow(window_name, im)
     box_id = 0
     while True:
@@ -33,7 +33,7 @@ for i in range(len(imgs_list)):
         if k == 27:
             cv2.destroyAllWindows()
             break
-        elif 48 <= k <= len(label_to_name) + 48:
+        elif 48 <= k < len(label_to_name) + 48:
             k = k - 48
             print('class :{}'.format(label_to_name[k]))
             r = cv2.selectROI(window_name, im)
