@@ -24,8 +24,9 @@ if args.data_root == 'faster_rcnn' :
     model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
     model.eval()
 else:
+    device = torch.device("cpu")
     model = get_model_instance_segmentation(len(label_to_name))
-    model.load_state_dict(torch.load(os.path.join(root, 'weight.pt'), map_location='cpu'))
+    model.load_state_dict(torch.load(os.path.join(root, 'weight.pt'), map_location=device))
     model.eval()
 
 cap = cv2.VideoCapture(0)
