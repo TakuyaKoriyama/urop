@@ -4,10 +4,11 @@ import os
 import argparse
 import pickle
 parser = argparse.ArgumentParser(description="annotation")
-parser.add_argument('data_root', type=str, help='example: gender')
+parser.add_argument('data_root', type=str, default='gender', help='example: gender')
 
 args = parser.parse_args()
-root =  os.path.join('data', args.data_root)
+
+root = os.path.join('data', 'gender')
 label_to_name_path = os.path.join(root, 'label_to_name')
 box_label_path = os.path.join(root,'box_label.txt')
 imgs_list = list(sorted(os.listdir(os.path.join(root, "Images"))))

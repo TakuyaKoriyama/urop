@@ -7,13 +7,14 @@ import argparse
 import pickle
 import os
 from finetune import get_model_instance_segmentation
+import torch
 
 parser = argparse.ArgumentParser(description='segmentation using webcamera')
 parser.add_argument('data_root', type=str, help='example: gender')
 parser.add_argument('-st','--score_thr', type=float, default=0.5)
 parser.add_argument('-it','--iou_thr', type=float, default=0.3)
-
 args = parser.parse_args()
+
 root = os.path.join('data', args.data_root)
 score_thr = args.score_thr
 iou_thr = args.iou_thr
@@ -24,7 +25,7 @@ if args.data_root == 'faster_rcnn' :
     model.eval()
 else:
     model = get_model_instance_segmentation(len(label_to_name))
-    model.load_state_dict(torch.load(os.path.join(root, 'weight')))
+    model.load_state_dict(torch.load(os.path.join(root, 'weight'), map_location='cpu'))
     model.eval()
 
 cap = cv2.VideoCapture(0)
