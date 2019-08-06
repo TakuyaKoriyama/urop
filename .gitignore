@@ -13,6 +13,8 @@ detection/PennFudanPed
 detection/people.jpg
 detection/test_img
 detection/gender_data
+detection/test_weight.py
+detection/weight.pt
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
