@@ -25,7 +25,7 @@ if args.data_root == 'faster_rcnn' :
     model.eval()
 else:
     model = get_model_instance_segmentation(len(label_to_name))
-    model.load_state_dict(torch.load(os.path.join(root, 'weight'), map_location='cpu'))
+    model.load_state_dict(torch.load(os.path.join(root, 'weight.pt'), map_location='cpu'))
     model.eval()
 
 cap = cv2.VideoCapture(0)

@@ -144,7 +144,7 @@ def main():
         evaluate(model, data_loader_test, device=device)
 
     print("That's it!")
-    torch.save(model.state_dict(), os.path.join(root, 'weight'))
+    torch.save(model.state_dict(), os.path.join(root, 'weight.pt'))
     print('saved weights of the model')
 if __name__ == "__main__":
     main()
