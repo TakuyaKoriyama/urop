@@ -20,7 +20,7 @@ score_thr = args.score_thr
 iou_thr = args.iou_thr
 f = open(os.path.join(root, 'label_to_name'), 'rb')
 label_to_name = pickle.load(f)
-if args.data_root == 'faster_rcnn' :
+if args.data_root == 'faster_rcnn':
     model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
     model.eval()
 else:
