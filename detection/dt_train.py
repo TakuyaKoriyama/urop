@@ -151,6 +151,7 @@ def main():
         evaluate(model, data_loader_test, device=device)
 
     print("That's it!")
-    torch.save(model, 'data/PennFudanPed/model')
+    torch.save(model.state_dict(), 'data/PennFudanPed/weight.pt')
+    print('saved weights of the model')
 if __name__ == "__main__":
     main()
