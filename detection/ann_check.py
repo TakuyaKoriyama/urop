@@ -50,7 +50,7 @@ for i in range(len(imgs_list)):
         box = boxes[j]
         label = labels[j]
         cv2.rectangle(im, (box[0], box[1]), (box[2], box[3]), color=(255, 0, 0), thickness=2)
-        cv2.putText(im, label_to_name[label], (box[1], box[0]), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 3, cv2.LINE_AA)
+        cv2.putText(im, label_to_name[label], (box[0], box[1]), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 3, cv2.LINE_AA)
         cv2.imshow(window_name, im)
         k = cv2.waitKey(0)
         if k == 27:
