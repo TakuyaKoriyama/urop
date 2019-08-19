@@ -8,7 +8,7 @@ parser.add_argument('data_root', type=str, default='gender', help='example: gend
 
 args = parser.parse_args()
 
-root = os.path.join('data', 'gender')
+root = os.path.join('data', args.data_root)
 label_to_name_path = os.path.join(root, 'label_to_name')
 box_label_path = os.path.join(root,'box_label.txt')
 imgs_list = list(sorted(os.listdir(os.path.join(root, "Images"))))
@@ -49,7 +49,7 @@ for i in range(len(imgs_list)):
     for j in range(num_objs):
         box = boxes[j]
         label = labels[j]
-        cv2.rectangle(im, (box[1], box[0]), (box[3], box[2]), color=(255, 0, 0), thickness=2)
+        cv2.rectangle(im, (box[0], box[1]), (box[2], box[3]), color=(255, 0, 0), thickness=2)
         cv2.putText(im, label_to_name[label], (box[1], box[0]), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 3, cv2.LINE_AA)
         cv2.imshow(window_name, im)
         k = cv2.waitKey(0)

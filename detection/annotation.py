@@ -38,10 +38,10 @@ for i in range(len(imgs_list)):
             print('class :{}'.format(label_to_name[k]))
             r = cv2.selectROI(window_name, im)
             class_label = k
-            x_0 = str(r[1])
-            x_1 = str(r[1]+r[3])
-            y_0 = str(r[0])
-            y_1 = str(r[0]+r[2])
+            y_0 = str(r[1])
+            y_1 = str(r[1]+r[3])
+            x_0 = str(r[0])
+            x_1 = str(r[0]+r[2])
             file.write(str(i) + ',' + str(box_id) + ',' +  str(class_label) + ',' + x_0 + ',' + y_0 + ',' + x_1 + ',' + y_1 + '\n')
             box_id += 1
         else:
