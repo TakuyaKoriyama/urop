@@ -4,6 +4,8 @@ argsparse.py
 hist
 label_to_name
 img_source
+detection/pedset.py
+detection/pedset2.py
 model
 img
 .DS_Store
