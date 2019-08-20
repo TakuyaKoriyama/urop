@@ -10,7 +10,7 @@ parser.add_argument('img_name', type=str, help="example: 'ants.jpg'")
 args = parser.parse_args()
 
 data_name = args.data_name ##'ants_bees'
-data_path = "./data/" + data_name  ### "./data/ants_bees"
+data_path = "./data/" + data_name  
 label_to_name_path = data_path + "/label_to_name"
 model_path = data_path + "/model"
 img_name = args.img_name 
@@ -29,6 +29,7 @@ outputs = recognize(model=model, img=img)
 _, pred = torch.max(outputs, 1)
 
 print(label_to_name[pred])
+#print(outputs[0][pred][0].detach().numpy())
 
 
 
