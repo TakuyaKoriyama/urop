@@ -3,6 +3,7 @@ import torch
 import argparse
 import pickle
 import cv2
+from finetune_helper_function import load_model
 
 parser = argparse.ArgumentParser(description="recognizer")
 parser.add_argument("data_name", type=str, help="example: 'ants_bees'")
@@ -11,12 +12,10 @@ args = parser.parse_args()
 data_name = args.data_name
 data_path = "./data/" + data_name  
 label_to_name_path = data_path + "/label_to_name"
-model_path = data_path + "/model"
 
-model = torch.load(model_path)
 f = open(label_to_name_path, 'rb')
 label_to_name = pickle.load(f)
-
+model = load_model(root=data_path, num_classes=len(label_to_name))
 
 cap = cv2.VideoCapture(0)
 

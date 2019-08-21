@@ -5,7 +5,7 @@ import argparse
 import pickle
 import matplotlib.pyplot as plt
 import numpy as np
-
+from finetune_helper_function import load_model
 
 parser = argparse.ArgumentParser(description="evaluation")
 parser.add_argument("data_name", type=str, help="example: 'ants_bees'")
@@ -15,7 +15,7 @@ args = parser.parse_args()
 
 data_name = args.data_name
 data_path = "./data/" + data_name
-model_path = data_path + "/model"
+
 label_to_name_path = data_path + "/label_to_name"
 img_path = data_path + "/img"
 batch_size = args.batch_size
@@ -24,8 +24,6 @@ f = open(label_to_name_path, 'rb')
 label_to_name = pickle.load(f)
 
 num_classes = len(label_to_name)
-
-
 
 data_transforms =transforms.Compose([
     transforms.Resize(224), 
@@ -39,8 +37,7 @@ image_datasets = datasets.ImageFolder(os.path.join(img_path, "val"), data_transf
 dataloader = torch.utils.data.DataLoader(image_datasets, batch_size=batch_size, shuffle=True, num_workers=4) 
 
 
-model = torch.load(model_path)
-model.eval()
+model = load_model(root=data_path, num_classes=num_classes)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class_correct = list(0. for i in range(num_classes))

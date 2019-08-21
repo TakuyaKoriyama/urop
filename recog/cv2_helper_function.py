@@ -34,6 +34,7 @@ def transform(img):
 def recognize(model, img):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     img.to(device)
+
     labels = model(img)
     return labels
 

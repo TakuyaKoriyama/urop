@@ -33,7 +33,7 @@ data_name = args.data_name ##'ants_bees'
 label_to_name = args.class_name ###["ants", "bees"]
 data_path = "./data/" + data_name  ### "./data/ants_bees"
 label_to_name_path = data_path + "/label_to_name"
-model_path = data_path + "/model"
+weight_path = data_path + "/weight.pt"
 img_path = data_path + "/img"
 
 
@@ -98,7 +98,7 @@ else:
 
 model, _ = train_model(model, dataloaders_dict, criterion, optimizer, num_epochs=num_epochs, is_inception=(pretrained_model_name=="inception"))
 
-torch.save(model, model_path) 
+torch.save(model.state_dict(), weight_path) 
 
 
 f = open(label_to_name_path, 'wb')

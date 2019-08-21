@@ -169,7 +169,19 @@ def initialize_model(model_name, num_classes, feature_extract, use_pretrained=Tr
     return model_ft, input_size
 
 
-
+def load_model(root, num_classes):
+    
+    model_ft = None
+    model_ft = models.alexnet(pretrained=True)
+    for param in model_ft.parameters():
+        param.requires_grad = False
+    num_ftrs = model_ft.classifier[6].in_features
+    model_ft.classifier[6] = nn.Linear(num_ftrs,num_classes)
+    device = torch.device("cpu")
+    model_ft.load_state_dict(torch.load(os.path.join(root, 'weight.pt'), map_location=device))
+    model_ft.eval()
+    
+    return model_ft
 
 
 
